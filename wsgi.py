@@ -1,0 +1,1 @@
+from estudo import app # se o nome da aplicação fosse app, não seria necessário esse import nem o arquivo wsgi.py
