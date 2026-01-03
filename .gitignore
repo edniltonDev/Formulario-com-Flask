@@ -6,3 +6,13 @@ instance/
 .env
 .env.*
 create_secret.py
+create_secrets.py
+instance/database.db
+maigrations/
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover

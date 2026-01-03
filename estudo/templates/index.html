@@ -2,14 +2,54 @@
 
 
 {% block content%} 
-    <div>
-        <h3>Estudo de flask</h3>
-        <h5>@youtube/campcode</h5>
-        <hr>
-    </div>
+
+<div class="container">
+    
     {% include 'nav.html'%} 
+    
+
+    <hr>
+
     <div>
-        <p>Bem vindo {{usuario}} ao curso de flask</p>
-        <img src="{{ url_for('static', filename='img/flask.png') }} " >
+        <p style="margin-top: 15px;">Bem vindo(a)</p> 
+
+        {% if current_user.is_authenticated %}
+
+        <span class="btn btn-primary mt-4"> {{ current_user.nome}} {{ current_user.sobrenome}}</span>
+        <a href="{{ url_for('logout')}}" class="btn btn-danger mt-4">Sair</a>  <!--linvk para deslogar usuario-->
+
+        {% else %}
+
+
+            <form action="" method="post" class="row mt-4 p-4 rounded border shadow">
+             
+                <h3>Faça o login</h3>
+
+                       
+                {{form.csrf_token}}
+
+                {{form.email.label()}}
+                {{form.email(class="form-control")}}
+
+                {{form.senha.label()}}
+                {{form.senha(class="form-control")}}
+
+                {{form.btnSubmit(class="btn btn-primary mt-4 col-12")}}
+
+                <div class="col-12 mt-4" > Não possui cadastro? <a href="{{ url_for('cadastro')}}" >Clique aqui e faça o cadastro</a></div>
+
+        
+            </form>
+
+
+
+        
+        {% endif %}
+        <hr>
+        <div class="text-center">
+        <img src="{{ url_for('static', filename='img/flask.png') }}" >
+        </div>
     </div> 
+</div>
+
 {% endblock %}    

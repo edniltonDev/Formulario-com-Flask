@@ -1,12 +1,40 @@
 from estudo import app, db
 from flask import render_template, url_for, request, redirect
 from estudo.models import Contato
-from estudo.forms import ContatoForm #importando o formulário de contato no segundo codigo
+from estudo.forms import ContatoForm, userForm, LoginForm  #importando o formulário de contato no segundo codigo
+from flask_login import login_user, logout_user, current_user
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def homepage():
-    usuario = "Théo"
-    return render_template("index.html", usuario=usuario)
+    usuario = current_user.nome if current_user.is_authenticated else "Visitante"
+    
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = form.login()
+        login_user(user, remember=True)
+        
+
+    print(current_user.is_authenticated)
+
+    return render_template("index.html", usuario=usuario, form=form )
+
+
+@app.route('/cadastro/', methods=['GET', 'POST'])
+def cadastro():
+    form = userForm()
+    if form.validate_on_submit():
+        user = form.save()
+        login_user(user, remember=True)
+        return redirect( url_for('homepage') )
+    return render_template("cadastro.html", form=form )
+
+#criar rota de logout, deslonga o usuário e redireciona para a homepage
+@app.route('/sair/') 
+def logout():
+    logout_user()
+    return redirect( url_for('homepage') )
+
 
 @app.route('/contato/', methods=['GET', 'POST'])
 def about():
